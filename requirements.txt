@@ -1,0 +1,9 @@
+torch
+diffusers[torch]
+Pillow
+vtracer
+cairosvg
+click
+transformers
+scikit-learn
+torchvision
