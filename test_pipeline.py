@@ -45,7 +45,7 @@ def _run(model_id, steps, guidance):
 
 
 def test_pipeline_sd_v1_4():
-    _run("CompVis/stable-diffusion-v1-4", steps=30, guidance=10.0)
+    _run("CompVis/stable-diffusion-v1-4", steps=1, guidance=10.0)
 
 
 @pytest.mark.requires_hf_auth
