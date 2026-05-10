@@ -32,10 +32,8 @@ python3.12 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
-
----
 
 ## Usage
 
@@ -71,6 +69,18 @@ python3.12 cli.py "my image" --input my_drawing.png -r 200 -c 32 --save-intermed
 # Use Z-Image-Turbo for a huge jump in quality (needs at least ~8 GB VRAM / RAM) (Works best with 9 steps and guidance 1.0)
 python3.12 cli.py "a beautiful anime girl looking at a stunning beach sunset over cartoon waves, with beautiful cartoon clouds" --model Tongyi-MAI/Z-Image-Turbo --steps 9 --guidance 1.0
 ```
+
+## Tests
+
+```bash
+# Run the SD 1.4 test (no HuggingFace login required)
+python -m pytest test_pipeline.py -v -s
+
+# Run all three model tests (requires HuggingFace login)
+python -m pytest test_pipeline.py -v -s --hf-auth
+```
+
+Each test runs the full pipeline and saves output to `test_output/` — pixel art, SD image, quantized image, and SVG.
 
 ## Model notes
 
