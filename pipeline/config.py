@@ -11,7 +11,6 @@ class PipelineConfig:
     resolution: int = 64
     sd_steps: int = 30
     sd_guidance: float = 10.0
-    negative_prompt: str = (
-        "border, borders, realistic, photorealistic, blur, noise"
-        "3d render, watermark, text"
-    )
+    negative_prompt: str = ""
+    quantize_model: bool = False
+    cpu_offload: bool = False

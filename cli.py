@@ -25,7 +25,10 @@ def _slugify(text: str) -> str:
 @click.option("--steps", default=30, show_default=True, help="SD inference steps.")
 @click.option("--guidance", default=10.0, show_default=True, help="SD guidance scale.")
 @click.option("--save-intermediate", is_flag=True, help="Save SD and quantized images alongside final output.")
-def generate(prompt, resolution, colors, output, input_path, model, subfolder, steps, guidance, save_intermediate):
+@click.option("--quantize", is_flag=True, help="Quantize transformer/UNet weights to FP8 via optimum-quanto before inference (reduces VRAM).")
+@click.option("--offload", is_flag=True, help="Sequential CPU offload: move each model to MPS only while active, freeing MPS budget between stages.")
+@click.option("--negative-prompt", "negative_prompt", default=None, help="Negative prompt string.")
+def generate(prompt, resolution, colors, output, input_path, model, subfolder, steps, guidance, save_intermediate, quantize, offload, negative_prompt):
     """Generate pixel art from a text PROMPT."""
     config_kwargs = dict(
         prompt=prompt,
@@ -39,6 +42,12 @@ def generate(prompt, resolution, colors, output, input_path, model, subfolder, s
         config_kwargs["model_id"] = model
     if subfolder is not None:
         config_kwargs["model_subfolder"] = subfolder
+    if quantize:
+        config_kwargs["quantize_model"] = True
+    if offload:
+        config_kwargs["cpu_offload"] = True
+    if negative_prompt is not None:
+        config_kwargs["negative_prompt"] = negative_prompt
     config = PipelineConfig(**config_kwargs)
 
     input_image = None
