@@ -9,7 +9,7 @@ Generates clean, grid-aligned pixel art from a text prompt via a four-step pipel
 
 This method avoids the grid-alignment and inconsistent-pixel-size problems common in directly AI-generated "pixel art."
 
-This project can also be used as a image-to-pixel-art converter if you bring your own image and skip the AI image generation part.
+This project can also be used as a image-to-pixel-art converter or a image-to-vector converter if you bring your own image and skip the AI image generation part.
 
 ## Gallery
 
