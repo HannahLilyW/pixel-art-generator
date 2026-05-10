@@ -15,7 +15,7 @@ This project can also be used as a image-to-pixel-art converter if you bring you
 
 ## Setup
 
-**Requirements:** Python 3.12+, Homebrew
+**Requirements:** Python 3.12+, Cairo
 
 ```bash
 # System dependencies (one-time)
