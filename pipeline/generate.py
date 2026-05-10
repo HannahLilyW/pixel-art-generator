@@ -13,6 +13,8 @@ def _apply_fp8_scales(text_encoder):
     Standard from_pretrained casts the FP8 values to BF16 but drops the scale tensors
     (logged as UNEXPECTED), leaving every linear layer off by its scale factor.
     Fix: load only the tiny scalar scales and multiply the already-loaded weights in-place.
+
+    This was added while testing Z-Anime which has an LLM component, not used by Z-Image-Turbo.
     """
     from safetensors import safe_open
 
@@ -110,25 +112,7 @@ def generate_image(config: PipelineConfig) -> Image.Image:
     if hasattr(pipe, "text_encoder") and pipe.text_encoder is not None:
         _apply_fp8_scales(pipe.text_encoder)
 
-    if config.quantize_model:
-        from optimum.quanto import freeze, quantize as quanto_quantize
-        # FP8 matmul is only natively supported on CUDA; MPS and CPU must use INT8
-        if device == "cuda":
-            from optimum.quanto import qfloat8
-            qtype, qtype_name = qfloat8, "FP8"
-        else:
-            from optimum.quanto import qint8
-            qtype, qtype_name = qint8, "INT8"
-        for attr in ("transformer", "unet"):
-            target = getattr(pipe, attr, None)
-            if target is not None and isinstance(target, torch.nn.Module):
-                print(f"Quantizing {type(target).__name__} weights to {qtype_name} (optimum-quanto)...")
-                quanto_quantize(target, weights=qtype)
-                freeze(target)
-
     if config.cpu_offload:
-        # enable_sequential_cpu_offload conflicts with quanto tensors (uses meta device internally);
-        # enable_model_cpu_offload works at the component level and only calls .to(), which quanto supports.
         pipe.enable_model_cpu_offload(device=device)
     else:
         pipe = pipe.to(device)
