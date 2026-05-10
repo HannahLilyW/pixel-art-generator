@@ -60,7 +60,7 @@ The output lands in `./output/` — a `.png` pixel art file and a `.svg` vector 
 ### Examples
 
 ```bash
-# 150x150 image with a palette of 32 colors, with all intermediate steps saved
+# 150x150 image with a palette of 16 colors, with all intermediate steps saved
 python3.12 cli.py "a cute anime orange kitten" -r 150 -c 16 --save-intermediate
 
 # Skip AI image generation — vectorize and pixelate an existing image (much faster / less resource intensive)
